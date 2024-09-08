@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LeetcodeEditor">
+    <option name="projectConfig">
+      <map>
+        <entry key="F:/Code Used/leetcode/leetcode/editor/cn/[208]实现 Trie (前缀树).java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="F:/Code Used/leetcode/leetcode/editor/cn/doc/content/[208]实现 Trie (前缀树).md" />
+              <option name="frontendQuestionId" value="leetcode.cn208" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="F:/Code Used/leetcode/leetcode/editor/cn/[208]实现 Trie (前缀树).java" />
+              <option name="titleSlug" value="implement-trie-prefix-tree" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="F:/Code Used/leetcode/leetcode/editor/cn/[39]组合总和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="F:/Code Used/leetcode/leetcode/editor/cn/doc/content/[39]组合总和.md" />
+              <option name="frontendQuestionId" value="leetcode.cn39" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="F:/Code Used/leetcode/leetcode/editor/cn/[39]组合总和.java" />
+              <option name="titleSlug" value="combination-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="F:/Code Used/leetcode/leetcode/editor/cn/[46]全排列.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="F:/Code Used/leetcode/leetcode/editor/cn/doc/content/[46]全排列.md" />
+              <option name="frontendQuestionId" value="leetcode.cn46" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="F:/Code Used/leetcode/leetcode/editor/cn/[46]全排列.java" />
+              <option name="titleSlug" value="permutations" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="F:/Code Used/leetcode/leetcode/editor/cn/[78]子集.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="F:/Code Used/leetcode/leetcode/editor/cn/doc/content/[78]子集.md" />
+              <option name="frontendQuestionId" value="leetcode.cn78" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="F:/Code Used/leetcode/leetcode/editor/cn/[78]子集.java" />
+              <option name="titleSlug" value="subsets" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="F:/Code Used/leetcode/leetcode/editor/cn/[LCR 026]重排链表.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="F:/Code Used/leetcode/leetcode/editor/cn/doc/content/[LCR 026]重排链表.md" />
+              <option name="frontendQuestionId" value="leetcode.cnLCR 026" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="F:/Code Used/leetcode/leetcode/editor/cn/[LCR 026]重排链表.java" />
+              <option name="titleSlug" value="LGjMqU" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
