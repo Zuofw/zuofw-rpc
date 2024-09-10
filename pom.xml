@@ -13,6 +13,7 @@
         <module>zuofw-rpc-provider</module>
         <module>zuofw-rpc-common</module>
         <module>zuofw-rpc-consumer</module>
+        <module>zuofw-rpc-core</module>
     </modules>
 
     <properties>
