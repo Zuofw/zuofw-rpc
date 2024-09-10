@@ -1,10 +1,10 @@
 package com.zuofw.rpc.consumer;
 
-import com.zuofw.easy.rpc.proxy.ServiceProxy;
-import com.zuofw.easy.rpc.proxy.ServiceProxyFactory;
-import com.zuofw.easy.rpc.registry.LocalRegistry;
+import com.zuofw.rpc.config.RPCConfig;
+import com.zuofw.rpc.proxy.ServiceProxyFactory;
 import com.zuofw.rpc.common.model.User;
 import com.zuofw.rpc.common.service.UserService;
+import com.zuofw.rpc.utils.ConfigUtils;
 
 /**
  * 〈〉
@@ -24,5 +24,7 @@ public class EasyConsumerExample {
         } else {
             System.out.println("Get user failed");
         }
+        RPCConfig rpcConfig = ConfigUtils.loadConfig(RPCConfig.class, "rpc");
+        System.out.println(rpcConfig);
     }
 }

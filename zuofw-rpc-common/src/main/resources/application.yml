@@ -1,0 +1,4 @@
+rpc:
+  name: zuofw-rpc
+  version: 1.0
+  serverPort: 8081

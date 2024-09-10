@@ -1,9 +1,9 @@
 package com.zuofw.rpc.consumer;
 
 import cn.hutool.http.HttpRequest;
-import com.zuofw.easy.rpc.model.RPCRequst;
-import com.zuofw.easy.rpc.model.RPCResponse;
-import com.zuofw.easy.rpc.serialiizer.JDKSerializer;
+import com.zuofw.rpc.model.RPCRequst;
+import com.zuofw.rpc.model.RPCResponse;
+import com.zuofw.rpc.serialiizer.JDKSerializer;
 import com.zuofw.rpc.common.model.User;
 import com.zuofw.rpc.common.service.UserService;
 
