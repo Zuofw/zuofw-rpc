@@ -26,5 +26,12 @@ public class EasyConsumerExample {
         }
         RPCConfig rpcConfig = ConfigUtils.loadConfig(RPCConfig.class, "rpc");
         System.out.println(rpcConfig);
+        testMock();
+    }
+    static private void testMock() {
+        UserService userService = ServiceProxyFactory.getProxy(UserService.class);
+        short number = userService.getNumber();
+        System.out.println("Number: " + number);
+
     }
 }

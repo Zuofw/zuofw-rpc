@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
  */
 public class ServiceProxyFactory {
     /*
-     * @description:  获取代理对象
+     * @description:  获取代理对象,是动态代理的核心方法
      * @author bronya
      * @date: 2024/9/6 14:24
      * @param serviceClass
