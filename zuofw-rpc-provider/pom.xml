@@ -19,8 +19,8 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.zuofw.easy.rpc</groupId>
-            <artifactId>zuofw-easy-rpc</artifactId>
+            <groupId>com.zuofw.rpc.core</groupId>
+            <artifactId>zuofw-rpc-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -36,7 +36,7 @@ public class ConfigUtils {
             //  application-dev.properties
             configFileBuilder.append("-").append(environment);
         }
-        configFileBuilder.append(".yaml");
+        configFileBuilder.append(".properties");
         //读取yaml配置文件
         Props props = new Props(configFileBuilder.toString());
         return props.toBean(tClass, prefix);

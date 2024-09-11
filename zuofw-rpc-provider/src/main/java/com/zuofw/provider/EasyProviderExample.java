@@ -1,4 +1,4 @@
-package com.zuofw.rpc.provider;
+package com.zuofw.provider;
 
 import com.zuofw.rpc.registry.LocalRegistry;
 import com.zuofw.rpc.server.NettyHttpServer;

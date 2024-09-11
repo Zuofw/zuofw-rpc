@@ -1,0 +1,2 @@
+jdk=com.zuofw.rpc.serialiizer.JDKSerializer
+json=com.zuofw.rpc.serialiizer.JSONSerializer

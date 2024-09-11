@@ -1,4 +1,4 @@
-package com.zuofw.rpc.provider;
+package com.zuofw.provider;
 
 import com.zuofw.rpc.common.model.User;
 import com.zuofw.rpc.common.service.UserService;

@@ -1,4 +1,4 @@
-package com.zuofw.rpc.consumer;
+package com.zuofw.consumer;
 
 import cn.hutool.http.HttpRequest;
 import com.zuofw.rpc.model.RPCRequst;

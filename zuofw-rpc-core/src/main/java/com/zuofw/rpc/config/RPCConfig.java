@@ -1,5 +1,7 @@
 package com.zuofw.rpc.config;
 
+import com.zuofw.rpc.serialiizer.SerializerFactory;
+import com.zuofw.rpc.serialiizer.SerializerKeys;
 import lombok.Data;
 
 /**
@@ -17,5 +19,9 @@ public class RPCConfig {
      private int serverPort = 8080;
 
      private boolean mock = false;
+     /**
+      * 序列化器
+      */
+     private String serializer = SerializerKeys.JDK;
 
 }

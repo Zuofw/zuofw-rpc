@@ -1,4 +1,4 @@
-package com.zuofw.rpc.consumer;
+package com.zuofw.consumer;
 
 import com.zuofw.rpc.config.RPCConfig;
 import com.zuofw.rpc.proxy.ServiceProxyFactory;
@@ -26,7 +26,7 @@ public class EasyConsumerExample {
         }
         RPCConfig rpcConfig = ConfigUtils.loadConfig(RPCConfig.class, "rpc");
         System.out.println(rpcConfig);
-        testMock();
+//        testMock();
     }
     static private void testMock() {
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
