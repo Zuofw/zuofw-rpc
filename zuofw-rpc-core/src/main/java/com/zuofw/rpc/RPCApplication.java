@@ -1,7 +1,10 @@
 package com.zuofw.rpc;
 
 import com.zuofw.rpc.config.RPCConfig;
+import com.zuofw.rpc.config.RegistryConfig;
 import com.zuofw.rpc.constant.RPCConstant;
+import com.zuofw.rpc.registry.Registry;
+import com.zuofw.rpc.registry.RegistryFactory;
 import com.zuofw.rpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +19,11 @@ public class RPCApplication {
     public static void init(RPCConfig newRpcConfig) {
         rpcConfig = newRpcConfig;
         log.info("rpc application init success,config:{}", rpcConfig);
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        //进行注册中心的初始化
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init success,config:{}", registryConfig);
     }
 
     /**
@@ -27,6 +35,7 @@ public class RPCApplication {
             newRpcConfig = ConfigUtils.loadConfig(RPCConfig.class, RPCConstant.DEFAULT_CONFIG_PREFIX);
         } catch (Exception e) {
             // 读取配置文件失败，使用默认配置
+            log.info("读取文件配置失败");
             newRpcConfig = new RPCConfig();
         }
         init(newRpcConfig);
@@ -41,6 +50,7 @@ public class RPCApplication {
                 if (rpcConfig == null) {
                     init();
                 }
+
             }
         }
         return rpcConfig;

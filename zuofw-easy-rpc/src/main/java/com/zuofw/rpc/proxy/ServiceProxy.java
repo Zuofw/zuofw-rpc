@@ -32,7 +32,7 @@ public class ServiceProxy implements InvocationHandler {
         try {
             byte[] bodyBytes = jdkSerializer.serialize(rpcRequst);
             // 发送请求
-            try(HttpResponse httpResponse = HttpRequest.post("http://localhost:8080").body(bodyBytes).execute()) {
+            try(HttpResponse httpResponse = HttpRequest.post("http://192.168.61.190:8080").body(bodyBytes).execute()) {
                 byte[] result = httpResponse.bodyBytes();
                 RPCResponse response = jdkSerializer.deserialize(result, RPCResponse.class);
                 return response.getData();

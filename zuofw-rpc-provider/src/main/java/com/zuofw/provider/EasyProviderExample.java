@@ -1,8 +1,17 @@
 package com.zuofw.provider;
 
+import com.zuofw.rpc.RPCApplication;
+import com.zuofw.rpc.config.RPCConfig;
+import com.zuofw.rpc.config.RegistryConfig;
+import com.zuofw.rpc.model.ServiceMetaInfo;
 import com.zuofw.rpc.registry.LocalRegistry;
+import com.zuofw.rpc.registry.Registry;
+import com.zuofw.rpc.registry.RegistryFactory;
+import com.zuofw.rpc.server.HttpServer;
 import com.zuofw.rpc.server.NettyHttpServer;
 import com.zuofw.rpc.common.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 
 /**
  * 〈〉
@@ -11,11 +20,38 @@ import com.zuofw.rpc.common.service.UserService;
  * @create 2024/9/7
  * @since 1.0.0
  */
+@Slf4j
 public class EasyProviderExample {
     public static void main(String[] args) {
-        LocalRegistry.register(UserService.class.getName(), UserServiceImpl.class);
+        RPCApplication.init();
+
+        String serviceName = UserService.class.getName();
+
+        // provider向注册中心注册服务信息
+        //向本地注册中心注册信息，方便Netty发送本地请求
+        LocalRegistry.register(serviceName, UserServiceImpl.class);
+
+        RPCConfig config = RPCApplication.getRpcConfig();
+        RegistryConfig registryConfig = config.getRegistryConfig();
+        // 获取一个注册中心实例
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        //设置服务信息
+        ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+        serviceMetaInfo.setServiceName(serviceName);
+        serviceMetaInfo.setServiceHost(config.getServerHost());
+        serviceMetaInfo.setServicePort(config.getServerPort());
+        serviceMetaInfo.setServicePort(config.getServerPort());
+        try {
+            log.info("provider register service:{}", serviceMetaInfo.getServiceAddress());
+            registry.register(serviceMetaInfo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        // 启动Server服务
         NettyHttpServer nettyHttpServer = new NettyHttpServer();
-        nettyHttpServer.start(8080);
+        log.info("服务已开启，端口为{}",config.getServerPort());
+        nettyHttpServer.start(config.getServerPort());
+
     }
 
 }

@@ -7,5 +7,7 @@ public interface RPCConstant {
     /**
      * 默认配置文件加载前缀
      */
-    String DEFAULT_CONFIG_PREFIX = "META-INF/rpc";
+    String DEFAULT_CONFIG_PREFIX = "rpc";
+
+    String DEFAULT_SERVICE_VERSION = "1.0";
 }

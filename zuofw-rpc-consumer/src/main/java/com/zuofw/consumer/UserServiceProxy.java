@@ -31,7 +31,7 @@ public class UserServiceProxy implements UserService {
         try {
             byte[] bodyBytes = serializer.serialize(rpcRequst);
             byte[] result;
-            String url = "http://localhost:8080";
+            String url = "http://192.168.61.190:8080";
             result = HttpRequest.post(url).body(bodyBytes).execute().bodyBytes();
             RPCResponse rpcResponse = serializer.deserialize(result, RPCResponse.class);
             return (User) rpcResponse.getData();
