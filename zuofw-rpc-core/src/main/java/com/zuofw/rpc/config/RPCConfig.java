@@ -1,6 +1,5 @@
 package com.zuofw.rpc.config;
 
-import com.zuofw.rpc.serialiizer.SerializerFactory;
 import com.zuofw.rpc.serialiizer.SerializerKeys;
 import lombok.Data;
 
@@ -24,6 +23,6 @@ public class RPCConfig {
       */
      private String serializer = SerializerKeys.JDK;
 
-     private RegistryConfig registryConfig;
+     private RegistryConfig registryConfig = new RegistryConfig();
 
 }

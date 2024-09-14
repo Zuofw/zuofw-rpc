@@ -35,9 +35,11 @@ public class RPCApplication {
             newRpcConfig = ConfigUtils.loadConfig(RPCConfig.class, RPCConstant.DEFAULT_CONFIG_PREFIX);
         } catch (Exception e) {
             // 读取配置文件失败，使用默认配置
+            System.out.println("读取文件失败");
             log.info("读取文件配置失败");
             newRpcConfig = new RPCConfig();
         }
+        System.out.println("newRpcConfig: " + newRpcConfig);
         init(newRpcConfig);
     }
 

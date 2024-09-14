@@ -5,6 +5,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/zuofw-rpc-spring-boot-starter/pom.xml" />
+        <option value="$PROJECT_DIR$/zuofw-rpc-spring-provider/pom.xml" />
+        <option value="$PROJECT_DIR$/zuofw-rpc-spring-consumer/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />

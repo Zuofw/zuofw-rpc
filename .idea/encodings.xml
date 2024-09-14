@@ -13,6 +13,9 @@
     <file url="file://$PROJECT_DIR$/zuofw-rpc-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/zuofw-rpc-provider/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/zuofw-rpc-provider/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zuofw-rpc-spring-boot-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zuofw-rpc-spring-consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zuofw-rpc-spring-provider/src/main/java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
