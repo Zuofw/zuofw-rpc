@@ -20,7 +20,7 @@ public class UserServiceImpl {
 
     public void sayHello(String name) {
         User user = new User();
-        user.setName("yunfei");
+        user.setName("zuofw");
         User resultUser = userService.getUser(user);
         System.out.println("consumer get User:" + resultUser.getName());
     }
