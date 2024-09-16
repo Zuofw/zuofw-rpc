@@ -1,7 +1,7 @@
 package com.zuofw.consumer;
 
 import cn.hutool.http.HttpRequest;
-import com.zuofw.rpc.model.RPCRequst;
+import com.zuofw.rpc.model.RPCRequest;
 import com.zuofw.rpc.model.RPCResponse;
 import com.zuofw.rpc.serialiizer.JDKSerializer;
 import com.zuofw.rpc.common.model.User;
@@ -22,14 +22,14 @@ public class UserServiceProxy implements UserService {
     public User getUser(User user) {
         JDKSerializer serializer = new JDKSerializer();
 
-        RPCRequst rpcRequst = RPCRequst.builder()
+        RPCRequest rpcRequest = RPCRequest.builder()
                 .serviceName(UserService.class.getName())
                 .methodName("getUser")
                 .parameterTypes(new Class[]{User.class})
                 .args(new Object[]{user})
                 .build();
         try {
-            byte[] bodyBytes = serializer.serialize(rpcRequst);
+            byte[] bodyBytes = serializer.serialize(rpcRequest);
             byte[] result;
             String url = "http://192.168.61.190:8080";
             result = HttpRequest.post(url).body(bodyBytes).execute().bodyBytes();

@@ -26,6 +26,7 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
+
         JDKSerializer serializer = new JDKSerializer();
         System.out.println("reveive request:" + fullHttpRequest.method() + " " + fullHttpRequest.uri());
         //异步处理HTTP请求

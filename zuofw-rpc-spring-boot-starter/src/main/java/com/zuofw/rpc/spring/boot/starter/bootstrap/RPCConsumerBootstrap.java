@@ -1,8 +1,7 @@
 package com.zuofw.rpc.spring.boot.starter.bootstrap;
 
-import com.zuofw.rpc.proxy.ServiceProxyFactory;
+import com.zuofw.rpc.factory.ServiceProxyFactory;
 import com.zuofw.rpc.spring.boot.starter.annoation.ZuofwRPCReference;
-import com.zuofw.rpc.spring.boot.starter.annoation.ZuofwRPCService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

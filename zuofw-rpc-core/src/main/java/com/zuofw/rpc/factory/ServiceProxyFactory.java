@@ -1,6 +1,8 @@
-package com.zuofw.rpc.proxy;
+package com.zuofw.rpc.factory;
 
 import com.zuofw.rpc.RPCApplication;
+import com.zuofw.rpc.proxy.MockServiceProxy;
+import com.zuofw.rpc.proxy.ServiceProxy;
 
 import java.lang.reflect.Proxy;
 

@@ -1,7 +1,10 @@
 package com.zuofw.rpc.server;
 
-import com.zuofw.rpc.model.RPCRequst;
+import com.zuofw.rpc.constant.MessageType;
+import com.zuofw.rpc.constant.ProtocolConstant;
+import com.zuofw.rpc.model.RPCRequest;
 import com.zuofw.rpc.model.RPCResponse;
+import com.zuofw.rpc.model.ZMessage;
 import com.zuofw.rpc.registry.LocalRegistry;
 import com.zuofw.rpc.serialiizer.JDKSerializer;
 import com.zuofw.rpc.serialiizer.Serializer;
@@ -10,6 +13,8 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import io.netty.util.ReferenceCountUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -22,56 +27,49 @@ import java.lang.reflect.Method;
  * @since 1.0.0
  */
 //为何要继承SimpleChannelInboundHandler，因为这个类是ChannelInboundHandler的子类，它会自动释放资源
-public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+@Slf4j
+public class NettyHttpServerHandler extends SimpleChannelInboundHandler<ZMessage> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
-        JDKSerializer serializer = new JDKSerializer();
-        System.out.println("reveive request:" + fullHttpRequest.method() + " " + fullHttpRequest.uri());
-        //异步处理HTTP请求
-        /**
-         * Netty本身的设计是异步和事件驱动的，
-         * 这意味着即使你在channelRead0方法中执行同步操作，
-         * Netty也会在后台以异步方式处理I/O事件。
-         */
-        byte[] bytes = new byte[fullHttpRequest.content().readableBytes()];
-        //将请求参数反序列化
-        fullHttpRequest.content().readBytes(bytes);
-        RPCRequst rpcRequest = null;
-
-        try {
-            rpcRequest = serializer.deserialize(bytes, RPCRequst.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        RPCResponse rpcResponse = new RPCResponse();
-        if(rpcRequest == null) {
-            rpcResponse.setMessage("rpcRequest is null");
-            doResponse(channelHandlerContext, rpcResponse, serializer);
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ZMessage zMessage) throws Exception {
+        log.info("Server received message: {}", zMessage);  // 添加日志以确认服务端是否收到请求
+        if (zMessage.getHeader().getType() != MessageType.REQUEST.getValue()) {
             return;
         }
+        System.out.println("reveive request:" + zMessage.getHeader().getType());
         try {
-            Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
-            Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
-            Object result = method.invoke(implClass.newInstance(), rpcRequest.getArgs());
-            rpcResponse.setData(result);
-            rpcResponse.setDataType(method.getReturnType());
-            rpcResponse.setMessage("success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            rpcResponse.setMessage(e.getMessage());
-            rpcResponse.setException(e);
+            if(zMessage.getHeader().getType() != MessageType.REQUEST.getValue()) {
+                return;
+            }
+
+            RPCRequest rpcRequest = (RPCRequest) zMessage.getBody();
+            ZMessage.Header.HeaderBuilder headerBuilder = ZMessage.Header.builder()
+                    .serialize(zMessage.getHeader().getSerialize())
+                    .compress(zMessage.getHeader().getCompress())
+                    .requestId(zMessage.getHeader().getRequestId())
+                    .magic(ProtocolConstant.MAGIC)
+                    .type(MessageType.RESPONSE.getValue());
+            try {
+                Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
+                Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
+                Object result = method.invoke(implClass.newInstance(), rpcRequest.getArgs());
+                RPCResponse rpcResponse = new RPCResponse();
+                rpcResponse.setRequestId(zMessage.getHeader().getRequestId());
+                rpcResponse.setData(result);
+                rpcResponse.setDataType(method.getReturnType());
+                rpcResponse.setMessage("success");
+                ZMessage response = ZMessage.builder()
+                        .body(rpcResponse)
+                        .header(headerBuilder.build())
+                        .build();
+                channelHandlerContext.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+                log.info("Server send message: {}", response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } finally {
+            ReferenceCountUtil.release(zMessage);
         }
-        doResponse(channelHandlerContext, rpcResponse, serializer);
-    }
-    private void doResponse(ChannelHandlerContext channelHandlerContext, RPCResponse rpcResponse, Serializer serializer) throws IOException {
-        FullHttpResponse response = new DefaultFullHttpResponse(
-                HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-                Unpooled.wrappedBuffer(serializer.serialize(rpcResponse))
-        );
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json");
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-        channelHandlerContext.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
 }

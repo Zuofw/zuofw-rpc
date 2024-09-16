@@ -14,7 +14,7 @@ import lombok.Data;
 public class RPCConfig {
      private String name = "zuofw-rpc";
      private String version = "1.0";
-     private String serverHost = "localhost";
+     private String serverHost = "127.0.0.1";
      private Integer serverPort = 8080;
 
      private boolean mock = false;

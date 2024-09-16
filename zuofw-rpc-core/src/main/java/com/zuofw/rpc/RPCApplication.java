@@ -4,7 +4,7 @@ import com.zuofw.rpc.config.RPCConfig;
 import com.zuofw.rpc.config.RegistryConfig;
 import com.zuofw.rpc.constant.RPCConstant;
 import com.zuofw.rpc.registry.Registry;
-import com.zuofw.rpc.registry.RegistryFactory;
+import com.zuofw.rpc.factory.RegistryFactory;
 import com.zuofw.rpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 

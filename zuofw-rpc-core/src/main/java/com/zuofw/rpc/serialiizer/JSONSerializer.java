@@ -1,7 +1,7 @@
 package com.zuofw.rpc.serialiizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zuofw.rpc.model.RPCRequst;
+import com.zuofw.rpc.model.RPCRequest;
 import com.zuofw.rpc.model.RPCResponse;
 
 import java.io.IOException;
@@ -26,8 +26,8 @@ public class JSONSerializer implements Serializer{
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) throws IOException {
         T obj = OBJECT_MAPPER.readValue(bytes, clazz);
-        if(obj instanceof RPCRequst) {
-            return handleRequest((RPCRequst) obj, clazz);
+        if(obj instanceof RPCRequest) {
+            return handleRequest((RPCRequest) obj, clazz);
         } else if(obj instanceof RPCResponse){
             return  handleResponse((RPCResponse) obj,clazz);
         }
@@ -45,7 +45,7 @@ public class JSONSerializer implements Serializer{
         return type.cast(rpcResponse);
     }
 
-    public <T> T handleRequest(RPCRequst rpcRequest, Class<T> type) throws IOException {
+    public <T> T handleRequest(RPCRequest rpcRequest, Class<T> type) throws IOException {
         // 获取参数类型
         Class<?>[] parameterTypes = rpcRequest.getParameterTypes();
         // 获取参数

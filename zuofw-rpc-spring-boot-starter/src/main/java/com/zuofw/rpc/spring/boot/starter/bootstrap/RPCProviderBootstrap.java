@@ -6,7 +6,7 @@ import com.zuofw.rpc.config.RegistryConfig;
 import com.zuofw.rpc.model.ServiceMetaInfo;
 import com.zuofw.rpc.registry.LocalRegistry;
 import com.zuofw.rpc.registry.Registry;
-import com.zuofw.rpc.registry.RegistryFactory;
+import com.zuofw.rpc.factory.RegistryFactory;
 import com.zuofw.rpc.spring.boot.starter.annoation.ZuofwRPCService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;

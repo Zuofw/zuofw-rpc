@@ -1,7 +1,7 @@
 package com.zuofw.consumer;
 
 import com.zuofw.rpc.config.RPCConfig;
-import com.zuofw.rpc.proxy.ServiceProxyFactory;
+import com.zuofw.rpc.factory.ServiceProxyFactory;
 import com.zuofw.rpc.common.model.User;
 import com.zuofw.rpc.common.service.UserService;
 import com.zuofw.rpc.utils.ConfigUtils;

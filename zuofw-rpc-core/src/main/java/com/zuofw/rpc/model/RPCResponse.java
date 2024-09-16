@@ -20,6 +20,11 @@ import java.io.Serializable;
 @Builder
 public class RPCResponse implements Serializable {
     /**
+     * 请求ID
+     */
+    private long requestId;
+
+    /**
      * 响应数据
      */
     private Object data;

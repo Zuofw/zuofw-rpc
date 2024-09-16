@@ -1,5 +1,7 @@
-package com.zuofw.rpc.registry;
+package com.zuofw.rpc.factory;
 
+import com.zuofw.rpc.registry.Registry;
+import com.zuofw.rpc.registry.ZooKeeperRegistry;
 import com.zuofw.rpc.spi.SPILoader;
 
 /**
