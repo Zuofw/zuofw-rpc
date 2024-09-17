@@ -35,6 +35,7 @@ public class RPCInitBootStrap implements ImportBeanDefinitionRegistrar {
         if (needServer) {
             NettyServer nettyServer = new NettyServer();
             new Thread(() -> {
+                log.info("port:{}", rpcConfig.getServerPort());
                 nettyServer.start(rpcConfig.getServerPort());
             }).start();
         } else {

@@ -6,14 +6,14 @@ import java.lang.reflect.Proxy;
  * 动态代理工厂
  * 基于JDK动态代理
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/5
  * @since 1.0.0
  */
 public class ServiceProxyFactory {
     /*
      * @description:  获取代理对象,是动态代理的核心方法
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/6 14:24
      * @param serviceClass
      * @return T

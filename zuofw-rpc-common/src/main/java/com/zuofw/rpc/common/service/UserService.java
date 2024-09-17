@@ -6,7 +6,7 @@ public interface UserService {
     User getUser(User user);
     /*
      * @description:   用于测试默认方法
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/10 20:48
      * @return short
      */

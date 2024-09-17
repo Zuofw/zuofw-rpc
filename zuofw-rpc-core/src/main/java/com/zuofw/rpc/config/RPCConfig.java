@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * 〈RPC全局配置类,如果没有覆盖默认是提供服务的一方所对应的配置〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/10
  * @since 1.0.0
  */

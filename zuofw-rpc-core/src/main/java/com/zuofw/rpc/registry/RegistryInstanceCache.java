@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 〈〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/11
  * @since 1.0.0
  */
@@ -17,7 +17,7 @@ public class RegistryInstanceCache {
 
     /*
      * @description:   写缓存
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/11 18:53
      * @param newServiceCache
      */
@@ -27,7 +27,7 @@ public class RegistryInstanceCache {
 
     /*
      * @description:  读缓存
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/11 18:53
      * @return java.util.List<com.zuofw.rpc.model.ServiceMetaInfo>
      */
@@ -36,7 +36,7 @@ public class RegistryInstanceCache {
     }
     /*
      * @description:  清空缓存
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/11 18:53
      */
     void clearCache() {

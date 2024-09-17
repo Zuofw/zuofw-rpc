@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 〈本地注册中心实现〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/6
  * @since 1.0.0
  */
@@ -20,7 +20,7 @@ public class LocalRegistry {
 
     /*
      * @description:  注册实现
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/6 16:19
      * @param service
      * @param implClass
@@ -30,7 +30,7 @@ public class LocalRegistry {
     }
     /*
      * @description:  获取服务
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/6 16:19
      * @param service
      * @return java.lang.Class<?>

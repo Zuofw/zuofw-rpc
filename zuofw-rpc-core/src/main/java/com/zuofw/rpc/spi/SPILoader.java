@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 〈SPI加载工具类,实现单例模式加载〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/11
  * @since 1.0.0
  */
@@ -62,7 +62,7 @@ public class SPILoader {
 
     /**
      * @description:  加载所有的SPI
-     * @author bronya
+     * @author zuofw
      * @date 2024/9/11 14:44
      * @version 1.0
      */

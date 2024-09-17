@@ -1,0 +1,3 @@
+consistent-hash=com.zuofw.rpc.loadbalance.ConsistentHashLoadBalancer
+random=com.zuofw.rpc.loadbalance.RandomLoadBalancer
+round-robin=com.zuofw.rpc.loadbalance.RoundRobinLoadBalancer

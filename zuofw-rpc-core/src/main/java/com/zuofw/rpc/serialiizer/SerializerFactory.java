@@ -5,7 +5,7 @@ import com.zuofw.rpc.spi.SPILoader;
 /**
  * 〈Serializer工厂〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/11
  * @since 1.0.0
  */
@@ -20,7 +20,7 @@ public class SerializerFactory {
 
     /*
      * @description: 获取序列化方方式
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/11 15:21
      * @param key 值为SPI配置文件中的key
      * @return com.zuofw.rpc.serialiizer.Serializer.Serializer.Serializer

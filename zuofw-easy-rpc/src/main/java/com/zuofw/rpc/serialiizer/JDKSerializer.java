@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * 〈JDK序列化实现〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/6
  * @since 1.0.0
  */
@@ -13,7 +13,7 @@ public class JDKSerializer implements Serializer {
 
     /*
      * @description:   JDK实现
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/6 11:06
      * @param obj
      * @return byte[]

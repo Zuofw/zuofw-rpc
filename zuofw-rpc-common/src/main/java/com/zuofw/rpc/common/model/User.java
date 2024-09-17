@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 〈User实体类〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/7
  * @since 1.0.0
  */

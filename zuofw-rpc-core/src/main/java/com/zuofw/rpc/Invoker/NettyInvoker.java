@@ -5,7 +5,9 @@ import cn.hutool.core.util.IdUtil;
 import com.zuofw.rpc.RPCApplication;
 import com.zuofw.rpc.config.RPCConfig;
 import com.zuofw.rpc.constant.*;
+import com.zuofw.rpc.factory.LoadBalancerFactory;
 import com.zuofw.rpc.factory.RegistryFactory;
+import com.zuofw.rpc.loadbalance.LoadBalancer;
 import com.zuofw.rpc.model.*;
 import com.zuofw.rpc.registry.Registry;
 import com.zuofw.rpc.server.NettyClient;
@@ -14,13 +16,14 @@ import io.netty.channel.ChannelFutureListener;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * 〈Netty实现的发送代理〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/16
  * @since 1.0.0
  */
@@ -28,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
 public class NettyInvoker implements Invoker{
 
     private final NettyClient nettyClient = NettyClient.getInstance();
+    private final LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(LoadBalanceKeys.RANDOM);
     @Override
     public RPCResult invoke(RPCRequest request) throws Exception {
         // 从注册中心获取服务提供者请求地址
@@ -44,7 +48,9 @@ public class NettyInvoker implements Invoker{
         }
         // 暂时先取第一个
         // todo 负载均衡待做
-        ServiceMetaInfo metaInfo = serviceMetaInfos.get(0);
+        HashMap<String, Object> requestParams = new HashMap<>();
+        requestParams.put("serviceName", request.getServiceName());
+        ServiceMetaInfo metaInfo = loadBalancer.select(requestParams, serviceMetaInfos);
         log.info("address{}",metaInfo.getServiceAddress());
         InetSocketAddress socketAddress = new InetSocketAddress( metaInfo.getServiceHost(), metaInfo.getServicePort());
         // 打印url
@@ -71,7 +77,7 @@ public class NettyInvoker implements Invoker{
     }
     /*
      * @description:构建消息
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/16 14:46
      * @param request
      * @return com.zuofw.rpc.protocol.ZMessage<?>

@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 〈注册中心的配置〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/11
  * @since 1.0.0
  */

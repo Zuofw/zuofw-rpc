@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * 〈服务信息〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/11
  * @since 1.0.0
  */

@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 〈〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/16
  * @since 1.0.0
  */
@@ -64,7 +64,7 @@ public class NettyClient {
     }
     /*
      * @description:  获取单例
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/16 14:23
      * @return com.zuofw.rpc.server.NettyClient
      */
@@ -81,7 +81,7 @@ public class NettyClient {
 
     /*
      * @description:   获取连接的channel，如果没有则连接地址并返回channel，如果有则直接返回channel，如果channel不活跃则重新连接并返回channel
-     * @author bronya
+     * @author zuofw
      * @date: 2024/9/16 14:23
      * @param address
      * @return io.netty.channel.Channel
