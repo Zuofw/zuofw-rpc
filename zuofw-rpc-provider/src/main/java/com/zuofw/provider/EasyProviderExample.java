@@ -7,7 +7,7 @@ import com.zuofw.rpc.model.ServiceMetaInfo;
 import com.zuofw.rpc.registry.LocalRegistry;
 import com.zuofw.rpc.registry.Registry;
 import com.zuofw.rpc.factory.RegistryFactory;
-import com.zuofw.rpc.server.NettyHttpServer;
+import com.zuofw.rpc.server.NettyServer;
 import com.zuofw.rpc.common.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,9 +46,9 @@ public class EasyProviderExample {
             throw new RuntimeException(e);
         }
         // 启动Server服务
-        NettyHttpServer nettyHttpServer = new NettyHttpServer();
+        NettyServer nettyServer = new NettyServer();
         log.info("服务已开启，端口为{}",config.getServerPort());
-        nettyHttpServer.start(config.getServerPort());
+        nettyServer.start(config.getServerPort());
 
     }
 

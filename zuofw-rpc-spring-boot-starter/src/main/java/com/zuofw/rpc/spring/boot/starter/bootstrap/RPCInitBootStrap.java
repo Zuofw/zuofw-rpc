@@ -2,10 +2,9 @@ package com.zuofw.rpc.spring.boot.starter.bootstrap;
 
 import com.zuofw.rpc.RPCApplication;
 import com.zuofw.rpc.config.RPCConfig;
-import com.zuofw.rpc.server.NettyHttpServer;
+import com.zuofw.rpc.server.NettyServer;
 import com.zuofw.rpc.spring.boot.starter.annoation.EnableZuofwRpc;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.N;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
@@ -34,9 +33,9 @@ public class RPCInitBootStrap implements ImportBeanDefinitionRegistrar {
 
         // 启动服务器
         if (needServer) {
-            NettyHttpServer nettyHttpServer = new NettyHttpServer();
+            NettyServer nettyServer = new NettyServer();
             new Thread(() -> {
-                nettyHttpServer.start(rpcConfig.getServerPort());
+                nettyServer.start(rpcConfig.getServerPort());
             }).start();
         } else {
             log.info("Rpc server is not started");

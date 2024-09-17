@@ -6,17 +6,16 @@ import com.zuofw.rpc.model.RPCRequest;
 import com.zuofw.rpc.model.RPCResponse;
 import com.zuofw.rpc.model.ZMessage;
 import com.zuofw.rpc.registry.LocalRegistry;
-import com.zuofw.rpc.serialiizer.JDKSerializer;
-import com.zuofw.rpc.serialiizer.Serializer;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.data.Id;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -28,7 +27,7 @@ import java.lang.reflect.Method;
  */
 //为何要继承SimpleChannelInboundHandler，因为这个类是ChannelInboundHandler的子类，它会自动释放资源
 @Slf4j
-public class NettyHttpServerHandler extends SimpleChannelInboundHandler<ZMessage> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<ZMessage> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ZMessage zMessage) throws Exception {
@@ -72,4 +71,17 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<ZMessage
         }
     }
 
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if(evt instanceof IdleStateEvent) {
+            IdleState state = ((IdleStateEvent) evt).state();
+            if(state == IdleState.READER_IDLE) {
+                log.info("长时间未收到心跳包，关闭连接");
+                ctx.close();
+            }
+        } else {
+            // 调用父类的userEventTriggered方法，继续传播事件
+            super.userEventTriggered(ctx, evt);
+        }
+    }
 }

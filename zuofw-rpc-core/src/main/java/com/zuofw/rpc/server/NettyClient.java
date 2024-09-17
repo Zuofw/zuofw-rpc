@@ -53,7 +53,8 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         ChannelPipeline p = socketChannel.pipeline()
-//                                .addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS))
+                                // 5秒进行一次心跳检测，如果5秒内没有收到发送的数据，则触发一次userEventTriggered方法
+                                .addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS))
                                 .addLast(new ProtocolEncoder())
                                 .addLast(new ProtocolDecoder())
                                 .addLast(new NettyClientHandler());

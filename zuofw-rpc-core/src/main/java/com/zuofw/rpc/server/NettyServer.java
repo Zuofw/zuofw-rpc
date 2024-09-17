@@ -1,5 +1,7 @@
 package com.zuofw.rpc.server;
 
+import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.RuntimeUtil;
 import com.zuofw.rpc.constant.ProtocolDecoder;
 import com.zuofw.rpc.constant.ProtocolEncoder;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,18 +12,25 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
 
-public class NettyHttpServer implements HttpServer {
+import java.util.concurrent.TimeUnit;
+
+public class NettyServer implements HttpServer {
 
     @Override
     public void start(int port) {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        // 1是指定一个线程用于处理连接，0表示不处理连接
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        // 里面的参数是线程数，这里是处理消息的线程数,false是指定线程工厂是否是守护线程
+        DefaultEventExecutorGroup serviceHandlerGroup = new DefaultEventExecutorGroup(
+                RuntimeUtil.getProcessorCount() * 2,
+                ThreadUtil.newNamedThreadFactory("service-handler-group", false)
+        );
         try {
             /**
              * boss线程组用于处理连接工作，worker线程组用于数据处理
@@ -41,9 +50,11 @@ public class NettyHttpServer implements HttpServer {
 //                                    .addLast(new HttpServerCodec())
 //                                    .addLast(new HttpObjectAggregator(65536))
 //                                    .addLast(new ChunkedWriteHandler())
+                                    // 30之内没有收到客户端请求，就会触发IdleStateHandler的userEventTriggered方法
+                                    .addLast(new IdleStateHandler(30,0,0, TimeUnit.SECONDS))
                                     .addLast(new ProtocolEncoder())
                                     .addLast(new ProtocolDecoder())
-                                    .addLast(new NettyHttpServerHandler());
+                                    .addLast(serviceHandlerGroup, new NettyServerHandler());
 //                                    .addLast(new TestNettyHandler());
                             // todo 接收消息，将消息先编码，然后解码成ZMessage格式，最后交由NettyHttpServerHandler处理
                         }
@@ -63,6 +74,6 @@ public class NettyHttpServer implements HttpServer {
     }
 
     public static void main(String[] args) {
-        new NettyHttpServer().start(8080);
+        new NettyServer().start(8080);
     }
 }
