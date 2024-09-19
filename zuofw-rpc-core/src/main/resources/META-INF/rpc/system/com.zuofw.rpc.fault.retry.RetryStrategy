@@ -1,0 +1,2 @@
+no=com.zuofw.rpc.fault.retry.NoRetryStrategy
+fixedinterval=com.zuofw.rpc.fault.retry.FixedIntervalRetryStrategy

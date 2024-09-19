@@ -7,6 +7,10 @@ import com.zuofw.rpc.config.RPCConfig;
 import com.zuofw.rpc.constant.*;
 import com.zuofw.rpc.factory.LoadBalancerFactory;
 import com.zuofw.rpc.factory.RegistryFactory;
+import com.zuofw.rpc.factory.RetryStrategyFactory;
+import com.zuofw.rpc.factory.TolerantStrategyFactory;
+import com.zuofw.rpc.fault.retry.RetryStrategy;
+import com.zuofw.rpc.fault.tolerant.TolerantStrategy;
 import com.zuofw.rpc.loadbalance.LoadBalancer;
 import com.zuofw.rpc.model.*;
 import com.zuofw.rpc.registry.Registry;
@@ -18,27 +22,21 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * 〈Netty实现的发送代理〉
- *
- * @author zuofw
- * @create 2024/9/16
- * @since 1.0.0
- */
 @Slf4j
-public class NettyInvoker implements Invoker{
+public class NettyInvoker implements Invoker {
 
     private final NettyClient nettyClient = NettyClient.getInstance();
     private final LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(LoadBalanceKeys.RANDOM);
+
     @Override
     public RPCResult invoke(RPCRequest request) throws Exception {
         // 从注册中心获取服务提供者请求地址
         RPCConfig rpcConfig = RPCApplication.getRpcConfig();
         Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
-        // 构造请求
         String serviceName = request.getServiceName();
         serviceMetaInfo.setServiceName(serviceName);
         serviceMetaInfo.setServiceVersion(RPCConstant.DEFAULT_SERVICE_VERSION);
@@ -46,49 +44,57 @@ public class NettyInvoker implements Invoker{
         if (CollUtil.isEmpty(serviceMetaInfos)) {
             throw new RuntimeException("暂无可用服务提供者");
         }
-        // 暂时先取第一个
-        // todo 负载均衡待做
+
+        // 负载均衡
         HashMap<String, Object> requestParams = new HashMap<>();
         requestParams.put("serviceName", request.getServiceName());
         ServiceMetaInfo metaInfo = loadBalancer.select(requestParams, serviceMetaInfos);
-        log.info("address{}",metaInfo.getServiceAddress());
-        InetSocketAddress socketAddress = new InetSocketAddress( metaInfo.getServiceHost(), metaInfo.getServicePort());
-        // 打印url
+        log.info("address{}", metaInfo.getServiceAddress());
+        InetSocketAddress socketAddress = new InetSocketAddress(metaInfo.getServiceHost(), metaInfo.getServicePort());
         log.info("service url:{}", socketAddress);
-        Channel channel = nettyClient.getChannel(socketAddress);
-        if(channel.isActive()) {
-            CompletableFuture<RPCResponse> resultFuture = new CompletableFuture<>();
-            // 构造消息
-            ZMessage message = buildMessage(request);
-            UnprocessedRequests.put(message.getHeader().getRequestId(), resultFuture);
-            channel.writeAndFlush(message).addListener((ChannelFutureListener) future -> {
-                if(future.isSuccess()) {
-                    System.out.println("client send message: [" + message + "]");
+
+        // 使用重试策略
+        RPCResponse response;
+        try {
+            // todo 后期可改成从配置文件中读取重试策略
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance("fixedinterval");
+            response = retryStrategy.doRetry(() -> {
+                Channel channel = nettyClient.getChannel(socketAddress);
+                if (channel.isActive()) {
+                    CompletableFuture<RPCResponse> resultFuture = new CompletableFuture<>();
+                    ZMessage message = buildMessage(request);
+                    UnprocessedRequests.put(message.getHeader().getRequestId(), resultFuture);
+                    channel.writeAndFlush(message).addListener((ChannelFutureListener) future -> {
+                        if (future.isSuccess()) {
+                            log.info("client send message{}", message);
+                        } else {
+                            future.channel().close();
+                            resultFuture.completeExceptionally(future.cause());
+                            log.info("send failed{}", future.cause());
+                        }
+                    });
+                    return resultFuture.get();
                 } else {
-                    future.channel().close();
-                    resultFuture.completeExceptionally(future.cause());
-                    System.err.println("send failed:" + future.cause());
+                    throw new RuntimeException("channel is not active. address=" + socketAddress);
                 }
             });
-            return new FutureResult(resultFuture);
-        } else {
-            throw new RuntimeException("channel is not active. address=" + socketAddress);
+        } catch (Exception e) {
+              // todo 容错策略
+            TolerantStrategy strategy = TolerantStrategyFactory.getInstance("failover");
+            Map<String, Object> context = new HashMap<>();
+            context.put(TolerantStrategyConstant.SERVICE_LIST, serviceMetaInfos);
+            context.put(TolerantStrategyConstant.CURRENT_SERVICE, metaInfo);
+            context.put(TolerantStrategyConstant.RPC_REQUEST, request);
+            response = strategy.doTolerant(context, e);
         }
+        return new FutureResult(CompletableFuture.completedFuture(response));
     }
-    /*
-     * @description:构建消息
-     * @author zuofw
-     * @date: 2024/9/16 14:46
-     * @param request
-     * @return com.zuofw.rpc.protocol.ZMessage<?>
-     */
-    private ZMessage<?> buildMessage(RPCRequest request) {
-        // todo 这里可以设计成从用户的协议配置中获取
+
+    public static ZMessage<?> buildMessage(RPCRequest request) {
         ZMessage.Header header = new ZMessage.Header();
         header.setMagic(ProtocolConstant.MAGIC);
         header.setVersion(ProtocolConstant.PROTOCOL_VERSION);
-        // todo 压缩类型
-        header.setSerialize( (byte) SerializerEnum.getByValue(RPCApplication.getRpcConfig().getSerializer()).getKey());
+        header.setSerialize((byte) SerializerEnum.getByValue(RPCApplication.getRpcConfig().getSerializer()).getKey());
         header.setType(MessageType.REQUEST.getValue());
         header.setRequestId(IdUtil.getSnowflakeNextId());
         header.setCompress((byte) 0);

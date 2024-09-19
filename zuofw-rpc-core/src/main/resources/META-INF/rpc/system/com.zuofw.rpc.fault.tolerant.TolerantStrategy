@@ -1,0 +1,2 @@
+failover=com.zuofw.rpc.fault.tolerant.FailOverTolerantStrategy
+failfast=com.zuofw.rpc.fault.tolerant.FailFastTolerantStrategy
