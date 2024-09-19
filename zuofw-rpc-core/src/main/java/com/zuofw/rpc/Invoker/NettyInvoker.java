@@ -97,6 +97,7 @@ public class NettyInvoker implements Invoker {
         header.setSerialize((byte) SerializerEnum.getByValue(RPCApplication.getRpcConfig().getSerializer()).getKey());
         header.setType(MessageType.REQUEST.getValue());
         header.setRequestId(IdUtil.getSnowflakeNextId());
+        // 0默认是gzip
         header.setCompress((byte) 0);
         header.setStatus((byte) 0);
         header.setBodyLength(request.toString().getBytes().length);

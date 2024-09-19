@@ -1,0 +1,1 @@
+gzip=com.zuofw.rpc.compressor.GzipCompressor

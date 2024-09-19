@@ -1,5 +1,6 @@
 package com.zuofw.rpc.constant;
 
+import com.zuofw.rpc.factory.CompressorFactory;
 import com.zuofw.rpc.model.ZMessage;
 import com.zuofw.rpc.serialiizer.Serializer;
 import com.zuofw.rpc.serialiizer.SerializerFactory;
@@ -41,8 +42,9 @@ public class ProtocolEncoder extends MessageToByteEncoder<ZMessage<?>> {
         log.info("serializer的种类是{}", serializerEnum.getValue());
         Serializer serializer = SerializerFactory.getInstance(serializerEnum.getValue());
         byte[] bodyBytes = serializer.serialize(zMessage.getBody());
-        log.info("Serialized message body length: {}", bodyBytes.length);  // 添加日志以确认序列化后的消息长度
-        byteBuf.writeInt(bodyBytes.length);
-        byteBuf.writeBytes(bodyBytes);
+        byte[] compressedBody = CompressorFactory.getInstance("gzip").compress(bodyBytes);
+        log.info("Serialized message body length: {}", compressedBody.length);  // 添加日志以确认序列化后的消息长度
+        byteBuf.writeInt(compressedBody.length);
+        byteBuf.writeBytes(compressedBody);
     }
 }

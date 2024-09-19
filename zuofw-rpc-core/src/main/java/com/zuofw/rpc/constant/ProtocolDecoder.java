@@ -1,5 +1,7 @@
 package com.zuofw.rpc.constant;
 
+import com.zuofw.rpc.compressor.Compressor;
+import com.zuofw.rpc.factory.CompressorFactory;
 import com.zuofw.rpc.model.RPCRequest;
 import com.zuofw.rpc.model.RPCResponse;
 import com.zuofw.rpc.model.ZMessage;
@@ -55,6 +57,8 @@ public class ProtocolDecoder extends ByteToMessageDecoder {
         // todo 压缩解压缩
         byte[] body = new byte[bodyLength];
         byteBuf.readBytes(body);
+        Compressor compressor = CompressorFactory.getInstance("gzip");
+        byte[] unCompressBody = compressor.decompress(body);
         // 序列化
         SerializerEnum serializerEnum = SerializerEnum.getByKey(serialize);
         log.info("serializer种类是{}", serializerEnum.getValue());
@@ -64,7 +68,7 @@ public class ProtocolDecoder extends ByteToMessageDecoder {
         Serializer serializer = SerializerFactory.getInstance(serializerEnum.getValue());
         // Class<?> 是一个通配符，表示任意类型
         Class<?> clazz = type == MessageType.REQUEST.getValue() ? RPCRequest.class : RPCResponse.class;
-        Object bodyObj = serializer.deserialize(body, clazz);
+        Object bodyObj = serializer.deserialize(unCompressBody, clazz);
         ZMessage.Header header = new ZMessage.Header(magic, version, serialize, type, status, requestId, compress, bodyLength);
         ZMessage zMessage = new ZMessage(header, bodyObj);
         log.info("解码消息：{}", zMessage);
