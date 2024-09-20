@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 /**
  * 〈不重试机制〉
  *
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/18
  * @since 1.0.0
  */

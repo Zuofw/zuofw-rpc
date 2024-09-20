@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 固定间隔时间重试策略
- * @author zuowei
+ * @author zuofw
  * @create 2024/9/18
  * @since 1.0.0
  */

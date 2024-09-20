@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * @author houzuofw
+ * @author zuofw
  */
 @Slf4j
 public class RPCInitBootStrap implements ImportBeanDefinitionRegistrar {
