@@ -12,7 +12,7 @@ zhi-rpc是一款基于Java、Netty、Zookeeper实现的RPC通信框架，它具�
 6. 基于自定义starter实现，优化SpringBoot环境下的使用。
 
 ## 基本架构
-![](https://zuofw.github.io/2024/09/02/xiang-mu-jian-li-shi-xi/shou-xie-rpc/%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84.png)
+https://zuofw.github.io/2024/09/02/xiang-mu-jian-li-shi-xi/shou-xie-rpc/%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84.png
 1. 注册中心，用于服务注册和获取
 2. 服务端：提供服务的一方Provider
 3. 客户端：调用服务的一方Consumer
