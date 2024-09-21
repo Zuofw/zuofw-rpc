@@ -31,6 +31,7 @@ public class RPCConsumerBootstrap implements BeanPostProcessor {
                 field.setAccessible(true);
                 log.info("生成代理对象:{}", interfaceClass.getName());
                 Object proxy = ServiceProxyFactory.getProxy(interfaceClass);
+//                Object proxy = ServiceProxyFactory.getCGProxy(interfaceClass);
                 try {
                     field.set(bean, proxy);
                     field.setAccessible(false);

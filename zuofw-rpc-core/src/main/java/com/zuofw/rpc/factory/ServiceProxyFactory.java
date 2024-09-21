@@ -1,6 +1,7 @@
 package com.zuofw.rpc.factory;
 
 import com.zuofw.rpc.RPCApplication;
+import com.zuofw.rpc.proxy.CGServiceProxy;
 import com.zuofw.rpc.proxy.MockServiceProxy;
 import com.zuofw.rpc.proxy.ServiceProxy;
 
@@ -32,6 +33,10 @@ public class ServiceProxyFactory {
                 new Class[]{serviceClass},
                 new ServiceProxy()
         );
+    }
+    public static <T> T getCGProxy(Class<T> serviceClass) {
+        CGServiceProxy cgServiceProxy = new CGServiceProxy();
+        return (T) cgServiceProxy.getProxy(serviceClass);
     }
     /*
      * @description:  获取Mock代理对象，用于测试环境下的Mock数据返回，不会真正调用远程服务，而是返回Mock数据，用于测试环境下的单元测试等场景
