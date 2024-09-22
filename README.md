@@ -4,7 +4,7 @@ https://zuofw.github.io/
 本项目详细介绍：
 https://zuofw.github.io/2024/09/02/xiang-mu-jian-li-shi-xi/shou-xie-rpc/
 ## 项目介绍
-zhi-rpc是一款基于Java、Netty、Zookeeper实现的RPC通信框架，它具有以下核心特性：
+zuofw-rpc是一款基于Java、Netty、Zookeeper实现的RPC通信框架，它具有以下核心特性：
 1. 使用"微内核+可插拔"架构，通过自定义SPI加载机制，支持缓存，动态替代扩展点组件
 2. 灵活使用设计模式来提高系统可扩展性，如单例模式、工厂模式、建造者模式
 3. 实现服务调用负载均衡机制，支持轮询、随机、一致性哈希算法，优化调用体验
